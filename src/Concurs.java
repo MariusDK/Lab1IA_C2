@@ -19,59 +19,85 @@ public class Concurs
     public static List<String> folosite = new ArrayList<String>();
     public static List<String> nefolosite = new ArrayList<String>();
 
+    public static void initializareMultime(int n)
+    {
+        for (int i=0;i<n;i++)
+        {
+            int k=i+1;
+            nefolosite.add("C"+k);
+        }
+    }
+
+
+
+
     public static void back(int n)
     {
         String forma="";
         while (true)
-        if (nefolosite.size()==0)
         {
-            if (validare(forma,n)==false)
-            {
-                forma.replace(forma.substring(forma.length()-1),"");
-                nefolosite.add(folosite.get(folosite.size()-1));
-                folosite.remove(folosite.size()-1);
-                int k=0;
-                String next;
-                while (nefolosite.size()!=0)
-                {
-                    next=forma+nefolosite.get(k);
-                    if (validare(next,n))
+            if (nefolosite.size() == 0) {
+                if (validare(forma, n) == false) {
+                    System.out.println(validare(forma,n));
+                    forma = forma.substring(0, forma.length() - 2);
+                    nefolosite.add(folosite.get(folosite.size() - 1));
+                    folosite.remove(folosite.size() - 1);
+                    if (folosite.size()==n-1)
                     {
-                        forma=next;
-                        folosite.add(nefolosite.get(k));
-                        nefolosite.remove(k);
+                        forma = forma.substring(0, forma.length() - 2);
+                        nefolosite.add(folosite.get(folosite.size() - 1));
+                        folosite.remove(folosite.size() - 1);
                     }
-                    
 
+                    /**while (folosite.size() != n) {
+                        nefolosite.add(folosite.get(folosite.size() - 1));
+                        folosite.remove(folosite.size() - 1);
+
+                        for (int j=0;j<nefolosite.size();j++) {
+
+                            forma=forma+nefolosite.get(j);
+                            folosite.add(nefolosite.get(j));
+                            nefolosite.remove(j);
+                        }
+                    }
+                     **/
                 }
-            }
-            ordineParticipare.add(forma);
-        }
-        else
-        {
-            int i=0;
-            while(nefolosite.size()>0)
-            {
-                forma = forma + nefolosite.get(i);
-                folosite.add(nefolosite.get(i));
-                nefolosite.remove(i);
+                else {
+                    ordineParticipare.add(forma);
+                    System.out.println(forma);
+                }
+            } else {
+                int i = 0;
+                while (folosite.size() < n) {
+                    forma = forma+nefolosite.get(i);
+                    folosite.add(nefolosite.get(i));
+                    nefolosite.remove(i);
+                }
             }
         }
     }
     public static boolean validare(String cuvant,int n)
     {
-        if (cuvant.length()!=n)
+        if (cuvant.length()!=2*n)
         {
             return false;
         }
-        if (ordineParticipare.contains(cuvant))
-        {
+        if (ordineParticipare.contains(cuvant)) {
             return false;
         }
         return true;
     }
+    public static void solutii()
+    {
 
-
-
+    }
+    public static void main(String[] args)
+    {
+        Scanner sc=new Scanner(System.in);
+        System.out.println("Add next: ");
+        int n=sc.nextInt();
+        initializareMultime(n);
+        back(n);
+    }
 }
 
