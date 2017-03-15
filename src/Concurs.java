@@ -25,79 +25,119 @@ public class Concurs
         {
             int k=i+1;
             nefolosite.add("C"+k);
+
         }
+        System.out.println(nefolosite);
+
     }
+    public static String initializareSolInitiala()
+    {
+        String cuvant="";
+        while(nefolosite.size()!=0)
+        {
+            cuvant=push(cuvant);
+        }
+        return cuvant;
+    }
+    public static String push(String cuvant)
+    {
 
+        if ((nefolosite.size()==0)) {
+            return cuvant;
+        }
+        else{
+            cuvant = cuvant + nefolosite.get(0);
 
-
-
+        }
+        folosite.add(nefolosite.get(0));
+        nefolosite.remove(0);
+        return  cuvant;
+    }
+    public static String pop(String forma)
+    {
+        if (forma.length()==0)
+        {
+            return "0";
+        }
+        forma = forma.substring(0, forma.length() - 2);
+        nefolosite.add(folosite.get(folosite.size() - 1));
+        folosite.remove(folosite.size() - 1);
+        return forma;
+    }
     public static void back(int n)
     {
-        String forma="";
-        while (true)
+        String forma=initializareSolInitiala();
+        String retineBack="";
+        while (!forma.equals("0"))
         {
-            if (nefolosite.size() == 0) {
-                if (validare(forma, n) == false) {
-                    System.out.println(validare(forma,n));
-                    forma = forma.substring(0, forma.length() - 2);
-                    nefolosite.add(folosite.get(folosite.size() - 1));
-                    folosite.remove(folosite.size() - 1);
-                    if (folosite.size()==n-1)
-                    {
-                        forma = forma.substring(0, forma.length() - 2);
-                        nefolosite.add(folosite.get(folosite.size() - 1));
-                        folosite.remove(folosite.size() - 1);
+
+            if (nefolosite.size() == 0)
+            {
+                if (validare(forma) == false)
+                {
+                    //System.out.println("1");
+                    forma = pop(forma);
+                    if (retineBack.length()!=forma.length()) {
+                        retineBack = forma;
                     }
-
-                    /**while (folosite.size() != n) {
-                        nefolosite.add(folosite.get(folosite.size() - 1));
-                        folosite.remove(folosite.size() - 1);
-
-                        for (int j=0;j<nefolosite.size();j++) {
-
-                            forma=forma+nefolosite.get(j);
-                            folosite.add(nefolosite.get(j));
-                            nefolosite.remove(j);
-                        }
+                    if (next(0, forma).length() == 2 * n) {
+                        forma = pop(forma);
                     }
-                     **/
-                }
-                else {
+                } else {
                     ordineParticipare.add(forma);
-                    System.out.println(forma);
                 }
-            } else {
-                int i = 0;
-                while (folosite.size() < n) {
-                    forma = forma+nefolosite.get(i);
-                    folosite.add(nefolosite.get(i));
-                    nefolosite.remove(i);
-                }
+
+            }
+            if (next(0,forma).equals(retineBack))
+            {
+            forma=pop(forma);
+            }
+            else{
+                forma=push(forma);
+            }
+            if (forma.length()==0)
+            {
+                retineBack="";
             }
         }
+        //forma=pop(forma);
     }
-    public static boolean validare(String cuvant,int n)
+
+
+    public static String next(int i,String cuvant)
     {
-        if (cuvant.length()!=2*n)
-        {
-            return false;
+        //System.out.println(forma);
+        if (nefolosite.size()!=0) {
+            cuvant = cuvant + nefolosite.get(i);
         }
-        if (ordineParticipare.contains(cuvant)) {
-            return false;
+        return cuvant;
+    }
+    public static boolean validare(String cuvant)
+    {
+        for (int i=0;i<ordineParticipare.size();i++)
+        {
+            if (ordineParticipare.get(i)==cuvant)
+            {
+                return false;
+            }
         }
         return true;
     }
     public static void solutii()
     {
-
+        for (int i=0;i<ordineParticipare.size();i++)
+        {
+            System.out.println(ordineParticipare.get(i));
+        }
     }
     public static void main(String[] args)
     {
         Scanner sc=new Scanner(System.in);
-        System.out.println("Add next: ");
+        System.out.println("Add size: ");
         int n=sc.nextInt();
         initializareMultime(n);
         back(n);
+        solutii();
     }
 }
 
